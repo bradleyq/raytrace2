@@ -10,7 +10,7 @@ varying vec3 fNormal;
 
 void main() {
 	// TODO: Part 5.1
-    fPosition = vec3(0.0);
-    fNormal = vec3(0.0);
-    gl_Position = vec4(vec3(0.0), 1.0);
+    fPosition = position;
+    fNormal = normal;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }

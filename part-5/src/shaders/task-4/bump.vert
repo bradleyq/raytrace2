@@ -15,13 +15,16 @@ varying vec3 fNormal;
 void main() {
     vec3 offset = position;
 
-    // TODO: Compute displaced vertices
     float heightScaling = 0.8;
-
-    // TODO: Compute displaced normals
     float normalScaling = 1.0;
-
-    fPosition = vec3(0.0);
-    fNormal = vec3(0.0);
+    float height = texture2D(textureDisplacement, uv).x;
+    mat3 TBN = mat3(tangent, cross(normal, tangent), normal);
+    
+    float du = texture2D(textureDisplacement, vec2(uv.x + 1.0 / textureDimension.x, uv.y)).x - height;
+    du *= heightScaling * normalScaling;
+    float dv = texture2D(textureDisplacement, vec2(uv.x, uv.y + 1.0 / textureDimension.y)).x - height;
+    dv *= heightScaling * normalScaling;
+    fPosition = offset;
+    fNormal = TBN * vec3(-du, -dv, 1.0);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(offset, 1.0);
 }

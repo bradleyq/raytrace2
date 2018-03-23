@@ -16,44 +16,285 @@
 <body>
 <br />
 <h1 align="middle">Assignment 3: PathTracer</h1>
-    <h2 align="middle">Your Name</h2>
+    <h2 align="middle">Bradley Qu</h2>
 
     <div class="padded">
-        <p>Use this section to write an overview of the assignment. All of the text in your write-up should be <em>in your own words</em>. If you need to add additional HTML features to this document, you can search the <a href="http://www.w3schools.com/">http://www.w3schools.com/</a> website for instructions. To edit the HTML, you can just copy and paste existing chunks and fill in the text and image file names appropriately.</p>
-        <o>The website writeup is intended to be a self-contained walkthrough of the assignment: we want this to be a piece of work which showcases your understanding of relevant concepts through both mesh images as well as written explanations about what you did to complete each part of the assignment. Try to be as clear and organized as possible when writing about your own output files or extensions to the assignment. We want to understand what you've achieved and how you've done it!</p> 
-        <p>If you are well-versed in web development, feel free to ditch this template and make a better looking page. Just make sure that you include all the components as we've laid them out here. </p>
-
-    <h2 align="middle">Part 1: Ray Generation and Intersection</h2>
-        <p>Describe what you did in Part 1. etc...</p>
+        <p>
+          In this project, we built a more in depth material system for our rendering engine. It allows for the rendering
+          of reflective materials and transparencies with the help of raycasting with refraction. Physically based models
+          for materials lend to especially realistic renders. We also learned how to use environment lighting to increase
+          realism of scenes.
+        </p>
+    <h2 align="middle">Part 1: Mirror and Glass Materials</h2>
+        <p>Part 1 was implementing perfectly reflective materials. This includes mirrors and glass. Here are renders
+          of the stages (light bounces) of the rendering of reflective materials.
+        </p>
         <div align="center">
-            <table style="width=100%">
+            <table style="width:100%">
                 <tr>
                     <td align="middle">
-                    <img src="images/example_image.png" width="480px" />
-                    <figcaption align="middle">Results Caption: my bunny is the bounciest bunny</figcaption>
+                    <img src="images/p1r0.png" width="480px" />
+                    <figcaption align="middle">Spheres 0 bounce</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p1r1.png" width="480px" />
+                    <figcaption align="middle">Spheres 1 bounce</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p1r2.png" width="480px" />
+                    <figcaption align="middle">Spheres 2 bounce</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="middle">
+                    <img src="images/p1r3.png" width="480px" />
+                    <figcaption align="middle">Spheres 3 bounce</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p1r4.png" width="480px" />
+                    <figcaption align="middle">Spheres 4 bounce</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p1r5.png" width="480px" />
+                    <figcaption align="middle">Spheres 5 bounce</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="middle">
+                    <img src="images/p1r100.png" width="480px" />
+                    <figcaption align="middle">Spheres 100 bounce</figcaption>
+                    </td>
                 </tr>
             </table>
         </div>
-        <p>Here is an example of how to include a simple formula:</p>
-        <p align="middle"><pre align="middle">a^2 + b^2 = c^2</pre></p>
-        <p>or, alternatively, you can include an SVG image of a LaTex formula.</p>
-        <p>This time it's your job to copy-paste in the rest of the sections :)</p>
-
-
-
-    <h2 align="middle">A Few Notes On Webpages</h2>
-        <p>Here are a few problems students have encountered in the past. You will probably encounter these problems at some point, so don't wait until right before the deadline to check that everything is working. Test your website on the instructional machines early!</p>
-        <ul>
-        <li>Your main report page should be called index.html.</li>
-        <li>Be sure to include and turn in all of the other files (such as images) that are linked in your report!</li>
-        <li>Use only <em>relative</em> paths to files, such as <pre>"./images/image.jpg"</pre>
-        Do <em>NOT</em> use absolute paths, such as <pre>"/Users/student/Desktop/image.jpg"</pre></li>
-        <li>Pay close attention to your filename extensions. Remember that on UNIX systems (such as the instructional machines), capitalization matters. <pre>.png != .jpeg != .jpg != .JPG</pre>
-        <li>Be sure to adjust the permissions on your files so that they are world readable. For more information on this please see this tutorial: <a href="http://www.grymoire.com/Unix/Permissions.html">http://www.grymoire.com/Unix/Permissions.html</a></li>
-        <li>And again, test your website on the instructional machines early!</li>
-
+        <p>
+          The reflections do not show up until 2 bounce. This is because the spheres reflect the bounce before it. Thus,
+          there is nothing to reflect until the 2nd bounce when the first bounces from the walls and light can reach the
+          spheres and bounce to the camera. Refraction does not show up until 4th bounce. This is because each transfer
+          from one material to another is considered a bounce. Light spots on the ground and wall do not show until 5th
+          bounce because light must refract, then bounce into the camera. 100 bounces produces no significant benefit over
+          5 bounces.
+        </p>
+        
+    <h2 align="middle">Part 2: Microfacet Material</h2>
+        <p>Part 2 implements microfacets which are materials composed of many microscopic perfect mirrors.
+        </p>
+        <div align="center">
+            <table style="width:100%">
+                <tr>
+                    <td align="middle">
+                    <img src="images/p2m005.png" width="240px" />
+                    <figcaption align="middle">Dragon a = 0.005</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p2m05.png" width="240px" />
+                    <figcaption align="middle">Dragon a = 0.05</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p2m25.png" width="240px" />
+                    <figcaption align="middle">Dragon a = 0.25</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p2m5.png" width="240px" />
+                    <figcaption align="middle">Dragon a = 0.5</figcaption>
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%">
+                <tr>
+                    <td align="middle">
+                    <img src="images/p2bunhem.png" width="480px" />
+                    <figcaption align="middle">Bunny with hemisphere sampling</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p2bunim.png" width="480px" />
+                    <figcaption align="middle">Bunny with importance sampling</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="middle">
+                    <img src="images/p2bunbismuth.png" width="480px" />
+                    <figcaption align="middle">A "Bismuth" bunny!</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p>
+          Hemisphere and importance sampling have a huge difference in efficiency of samples. Importance can get away with
+          many fewer samples for high quality reflections, especially with highly reflective materials that require precise
+          sampling of light sources. Weighted hemisphere sampling, no matter how well done, just cannot compete as many 
+          samples are wasted on low emmission objects.
+        </p>
+        <p>
+          The material for the custom bunny was bismuth. Although it properly reflects the color and texture of the metal,
+          it does not reflect the chromatic distortion of the metal. Thus, we do not see the pretty colors that we often
+          see with bismuth.
+        </p>
+        
+    <h2 align="middle">Part 3: Environment Light</h2>
+        <div align="center">
+            <table style="width:100%">
+                <tr>
+                    <td align="middle">
+                    <img src="images/p3bunfield.png" width="480px" />
+                    <figcaption align="middle">Bunny in the field diffuse hemisphere</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p3bunfieldhem.png" width="480px" />
+                    <figcaption align="middle">Bunny in the field diffuse importance</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="middle">
+                    <img src="images/p3bunfieldmicro.png" width="480px" />
+                    <figcaption align="middle">Bunny in the field copper hemisphere</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p3bunfieldmicrohem.png" width="480px" />
+                    <figcaption align="middle">Bunny in the field copper importance</figcaption>
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%">
+                <tr>
+                    <td align="middle">
+                    <img src="images/probability_debug_field.png" width="960px" />
+                    <figcaption align="middle">CDF debug image</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="middle">
+                    <img src="images/field.jpeg" width="1080px" />
+                    <figcaption align="middle">env map used</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p>
+          Hemisphere and importance sampling still have a large efficiency gap, but it just happens to not be the case
+          with the field env map. That is because the light sources are large and relativeley uniform so the difference
+          between hemisphere and importance is not striking. There is almost no difference for the diffuse bunny. There 
+          is a slight reduction of noise in the copper bunny, but not so much that it would be noticable. The benefits 
+          of importance sampling of env maps is more striking in low light/limited light source env maps like grace.exr.
+        </p>
+        
+    <h2 align="middle">Part 4: Depth of Field</h2>
+        <div align="center">
+            <table style="width:100%">
+                <tr>
+                    <td align="middle">
+                    <img src="images/p4dragonb0d17.png" width="240px" />
+                    <figcaption align="middle">Aperture/lens size 0.000 (pinhole)</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p4dragonb002d17.png" width="240px" />
+                    <figcaption align="middle">Aperture/lens size 0.002</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p4dragonb004d17.png" width="240px" />
+                    <figcaption align="middle">Aperture/lens size 0.004</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p4dragonb008d17.png" width="240px" />
+                    <figcaption align="middle">Aperture/lens size 0.008</figcaption>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="middle">
+                    <img src="images/p4dragonb009d17.png" width="240px" />
+                    <figcaption align="middle">Focal length 1.7</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p4dragonb009d19.png" width="240px" />
+                    <figcaption align="middle">Focal length 1.9</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p4dragonb009d21.png" width="240px" />
+                    <figcaption align="middle">Focal length 2.1</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/p4dragonb009d23.png" width="240px" />
+                    <figcaption align="middle">Focal length 2.3</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <p>
+          Some cool camera effects!
+        </p>
+        
     <h2 align="middle">Part 5: Shaders</h2>
-        <a href="gl/index.html">Include a link to your gl directory after completing part 5!</a>
+    <p>
+      Shaders process vertices and fragments with deferred shading in the graphics pipeline. It first processe vertices in 
+      the model to calculate things like texture, color, and normals. These values can then be interpolated onto the face
+      of the triangle. There can then be processing done per pixel on the faces in the fragment shader. This is very convenient
+      for calculating lighting and reflections as it breaks rendering up into small pieces. These pieces are both easy to
+      understand and can be parallelized for efficiency. Hence realtime rendering with gpu is possible. 
+    </p>
+   <div align="center">
+            <table style="width:100%">
+                <tr>
+                    <td align="middle">
+                    <img src="images/phong.png" width="480px" />
+                    <figcaption align="middle">Full specular</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/phongdiffuse.png" width="480px" />
+                    <figcaption align="middle">Diffuse and ambient</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/phongspec.png" width="480px" />
+                    <figcaption align="middle">Only specular</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    <p>
+      Blinn phong calculates lighting based on the bisecting vector of the light and eye location. It projects the bisector onto 
+      the normal and scales lighting based on the magnitude of the projection. Thus, the closer the camera
+      is to the perfect mirror angle, the stronger the reflection. This provides an illusion of a shiny/smooth surface without
+      costly reflection calculations. The downsides are that this kind of shading does not support occluding, although modifications
+      to it can make it possible.
+    </p>
+    <div align="center">
+            <table style="width:100%">
+                <tr>
+                    <td align="middle">
+                    <img src="images/customtex.png" width="480px" />
+                    <figcaption align="middle">Texture</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/custombump.png" width="480px" />
+                    <figcaption align="middle">bump mapping</figcaption>
+                    </td>
+                    <td align="middle">
+                    <img src="images/customdisplace.png" width="480px" />
+                    <figcaption align="middle">displacement mapping</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+      <p>
+        Bump mapping is good for small details. It is cheap and does not require much computation to render. Displacement mapping
+        can also be used for small details, but it is more useful for large details and modifying the horizon of the mesh. Bump
+        mapping does not change the vertex positions, so at oblique angles, it looks flat. Displacement mapping actually changes
+        the mesh so it is 3D in all directions. Obviously, this would be more expensive as bump mapping can be done at the fragment
+        shader level for high detail while displacement must be in vertex, so there must be incresaed vertices to properly reflect it.
+      </p>
+      <p>
+        Mesh coarseness does what it is expected to do. The lower the subdivisions, the less detailed the displacement and the 
+        bump mapping. One thing to notice is that if the displacement texture is highly repetititve / high frequency, aliasing
+        and Moire can occur!
+      </p>
+      <div style-"wdith:100%">
+        <img src="images/lastpart.png" width="480px" style="display:inline-block;vertical-align: middle"/>
+        <p style="display:inline-block;vertical-align:top;width:250px">
+          In task 5 I mainly played with the color changing and sin functions of the original shader. I made the oscillations offbeat
+          to increase pseudo randomness and added a time depended dimension stretching that looks kind of cool. I also added some 
+          normal shading to make it easier to discern the folds in the evolving geometry.
+        </p>
+        <a href="gl/index.html" style="display:inline-block;vertical-align:top;width:100%">Link to GL!!!!!!!!!!!!!!!!!!</a>
+      </div>
 </div>
 </body>
 </html>

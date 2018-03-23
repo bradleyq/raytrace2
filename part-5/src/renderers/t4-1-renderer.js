@@ -4,7 +4,7 @@ import Renderer from '../lib/renderer';
 import vert from '../shaders/task-4/bump.vert';
 import frag from '../shaders/task-2/phong.frag';
 
-import texture from '../textures/displacement2.png';
+import texture from '../textures/carpet2_disp.jpg';
 
 export default class extends Renderer {
   initScene() {

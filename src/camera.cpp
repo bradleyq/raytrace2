@@ -175,8 +175,14 @@ Ray Camera::generate_ray(double x, double y) const {
   // canonical sensor plane one unit away from the pinhole.
   // Note: hFov and vFov are in degrees.
   // 
-
-  return Ray(Vector3D(), Vector3D());
+  double xo = tan(radians(this->hFov)*.5);
+  double yo = tan(radians(this->vFov)*.5);
+  Vector3D dest = this->c2w * Vector3D(2*x*xo - xo, 2*y*yo - yo, -1);
+  dest.normalize();
+  Ray result = Ray(this->position(), dest);
+  result.max_t = this->fClip;
+  result.min_t = this->nClip;
+  return result;
 
 }
 
@@ -185,7 +191,19 @@ Ray Camera::generate_ray_for_thin_lens(double x, double y, double rndR, double r
     // Todo 3-2, Task 4:
     // compute position and direction of ray from the input sensor sample coordinate.
     // Note: use rndR and rndTheta to uniformly sample a unit disk.
-    return Ray(Vector3D(),Vector3D());
+    double rtrndR = sqrt(rndR);
+    double theta = 2 * PI * rndTheta;
+    Vector3D pLens(this->lensRadius * rtrndR * cos(theta), this->lensRadius * rtrndR * sin(theta), 0.0f);
+    double xo = tan(radians(this->hFov)*.5);
+    double yo = tan(radians(this->vFov)*.5);
+    Vector3D pFocus(2*x*xo - xo, 2*y*yo - yo, -1);
+    pFocus = pFocus * (-this->focalDistance) / pFocus.z;
+    Vector3D dir = this->c2w * (pFocus - pLens);
+    dir.normalize();
+    Ray result = Ray((this->c2w * pLens) + this->position(), dir);
+    result.max_t = this->fClip;
+    result.min_t = this->nClip;
+    return result;
 }
 
 
